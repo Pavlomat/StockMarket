@@ -30,8 +30,6 @@ class ViewController: UITableViewController, UISearchBarDelegate, UISearchResult
         self.navigationItem.title = "Акции"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        // тк апи взяты с бесплатного сайта то есть ограничение на 100 запросов в месяц, на api pavlov осталось 60 запросов.
-        
         // Время включения апи с mboum - 12:00 по Москве, при первом включении программы после установки до 12:00 нет данных, далее данные подгружаются, обновляются и сохраняются, чтобы при следующем включении до 12:00 появлялись последние данные за прошлый рабочий день.
         
         //api pavlov : https://mboum.com/api/v1/qu/quote/?symbol=AAPL,F,TSLA,LKOH,YNDX,BABA,MRNA,QIWI,GOLD,PLTR,BA,FB,AMD,V,ZM,FDX,SQ,SEDG,XOM,ROKU,BBBY,LRN,CNK,MU,BYND,AMAT,CCL,ALRS&apikey=pNDx1z6NL2s3xebLHhcV3tYWQnqlrs4GM3TeUq2pFZsb4ohRjI14cTs2uHru&format=json
