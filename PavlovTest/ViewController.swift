@@ -29,23 +29,14 @@ class ViewController: UITableViewController, UISearchBarDelegate, UISearchResult
         
         self.navigationItem.title = "Акции"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reloadData))
+        
         
         // Время включения апи с mboum - 12:00 по Москве, при первом включении программы после установки до 12:00 нет данных, далее данные подгружаются, обновляются и сохраняются, чтобы при следующем включении до 12:00 появлялись последние данные за прошлый рабочий день.
         
         //api pavlov : https://mboum.com/api/v1/qu/quote/?symbol=AAPL,F,TSLA,LKOH,YNDX,BABA,MRNA,QIWI,GOLD,PLTR,BA,FB,AMD,V,ZM,FDX,SQ,SEDG,XOM,ROKU,BBBY,LRN,CNK,MU,BYND,AMAT,CCL,ALRS&apikey=pNDx1z6NL2s3xebLHhcV3tYWQnqlrs4GM3TeUq2pFZsb4ohRjI14cTs2uHru&format=json
         
-        
-        let urlString = "https://mboum.com/api/v1/qu/quote/?symbol=AAPL,F,TSLA,LKOH,YNDX,BABA,MRNA,QIWI,GOLD,PLTR,BA,FB,AMD,V,ZM,FDX,SQ,SEDG,XOM,ROKU,BBBY,LRN,CNK,MU,BYND,AMAT,CCL,ALRS&apikey=pNDx1z6NL2s3xebLHhcV3tYWQnqlrs4GM3TeUq2pFZsb4ohRjI14cTs2uHru&format=json"
-        
-        //загрузка api из интернета по urlString
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            if let url = URL(string: urlString) {
-                if let data = try? Data(contentsOf: url) {
-                    self?.parse(json: data)
-                    return
-                }
-            }
-        }
+        reloadData() //загрузка данных по апи из интернета
 
         //загрузка сохраненных данных для доступа без интернета
         let defaults = UserDefaults.standard
@@ -289,6 +280,19 @@ class ViewController: UITableViewController, UISearchBarDelegate, UISearchResult
         
         let queue = DispatchQueue(label: "Monitor")
         monitor.start(queue: queue)
+    }
+    
+    @objc func reloadData() {
+        let urlString = "https://mboum.com/api/v1/qu/quote/?symbol=AAPL,F,TSLA,LKOH,YNDX,BABA,MRNA,QIWI,GOLD,PLTR,BA,FB,AMD,V,ZM,FDX,SQ,SEDG,XOM,ROKU,BBBY,LRN,CNK,MU,BYND,AMAT,CCL,ALRS&apikey=pNDx1z6NL2s3xebLHhcV3tYWQnqlrs4GM3TeUq2pFZsb4ohRjI14cTs2uHru&format=json"
+        
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            if let url = URL(string: urlString) {
+                if let data = try? Data(contentsOf: url) {
+                    self?.parse(json: data)
+                    return
+                }
+            }
+        }
     }
 }
 
